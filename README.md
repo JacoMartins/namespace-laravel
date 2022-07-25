@@ -1,6 +1,6 @@
 ### Projeto Semana 2 - NameSpace.
 
-- Projeto onde aprofundei meus conhecimentos em laravel e docker.
+- Projeto onde senti um aprofundamento em meus conhecimentos em laravel e docker.
 
 - CRUD, Docker, Eloquent ORM.
 
@@ -153,14 +153,6 @@ Resultado:
 
 ![Ações do usuário](https://i.imgur.com/mhKjgZA.png)
 
-```php
-@if(session('LoggedUser'))
-  @if($username === $name->who_posted)
-  <button>ação1...
-  @endif
-@endif
-```
-
 ## Considerações finais
 
 - Foi um ótimo projeto para o meu aprendizado em php e laravel.
@@ -169,4 +161,4 @@ Resultado:
 
 - Aprendi a usar docker (especialmente docker-compose).
 
-- A todos que estão me acompanhando, agradeço!
+- A todos que estão me acompanhando, meus agradecimentos!
