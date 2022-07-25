@@ -42,9 +42,23 @@ class MainController extends Controller
 
   public function edit($id) {
     $name = Name::where('id', '=', $id)->first();
+    $user = User::where('uuid', '=', session('LoggedUser'))->first();
 
-    return view('admin.edit', [
-      'name' => $name
-    ]);
+    if (session('LoggedUser')) {
+      if($name->who_posted === $user->username) {
+        $data = User::where('uuid', '=', session('LoggedUser'))->first();
+  
+        return view('admin.edit', [
+          'id' => $data->uuid,
+          'username' => $data->username,
+          'is_admin' => $data->is_admin,
+          'name' => $name,
+        ]);
+      }
+    }
+
+    return redirect()
+      ->route('index.route')
+      ->with('message', "Nome apagado com sucesso.");
   }
 }

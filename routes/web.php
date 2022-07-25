@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/names/{order}', [NameController::class, 'get'])->name('names.get');
+Route::get('/name', [NameController::class, 'search'])->name('names.search');
 Route::post('/names', [NameController::class, 'post'])->name('names.post');
+Route::put('/names/{id}', [NameController::class, 'put'])->name('names.put');
 Route::patch('/names/{id}', [NameController::class, 'patch'])->name('names.patch');
 Route::delete('/names/{id}', [NameController::class, 'delete'])->name('names.delete');
 

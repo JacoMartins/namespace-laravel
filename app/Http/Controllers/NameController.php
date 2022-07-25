@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidateNamePost;
+use App\Http\Requests\ValidateSearch;
 use App\Models\Name;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
@@ -31,8 +32,19 @@ class NameController extends Controller
     ]);
   }
 
-  public function search($query){
-    $names = Name::contains($query)->get();
+  public function search(ValidateSearch $request)
+  {
+    $names = Name::where('name', 'ilike', "%$request->search%")->paginate(10);
+
+    if (session('LoggedUser')) {
+      $user = User::where('uuid', '=', session('LoggedUser'))->first();
+
+      return view('home', [
+        'username' => $user->username,
+        'is_admin' => $user->is_admin,
+        'names' => $names,
+      ]);
+    }
 
     return view('home', [
       'names' => $names,
@@ -63,13 +75,30 @@ class NameController extends Controller
 
   public function put(ValidateNamePost $request, $id)
   {
+    $name = Name::where('id', '=', $id)->first();
+
     if (session('LoggedUser')) {
       $user = User::where('uuid', '=', session('LoggedUser'))->first();
-      Name::where('id', '=', $request->id)->first()->update([
-        'name' => $request->name,
-        'updated_at' => date_create(now()),
-      ]);
+      if ($name->who_posted === $user->username) {
+        $name->update([
+          'name' => $request->name,
+          'registers' => 0,
+          'updated_at' => date_create(now()),
+        ]);
+
+        return redirect()
+          ->route('index.route')
+          ->with('message', 'Nome editado com sucesso.');
+      }
+
+      return redirect()
+        ->route('index.route')
+        ->with('message', 'Não autorizado.');
     }
+
+    return redirect()
+      ->route('index.route')
+      ->with('message', 'Não autenticado.');
   }
 
   public function delete($id)
@@ -103,7 +132,7 @@ class NameController extends Controller
       if (!$name) {
         return redirect()
           ->route('index.route')
-          ->with('message', 'Não foi possível apagar nome: Nome não encontrado.');
+          ->with('message', 'Não foi possível adicionar aos registros: Nome não encontrado.');
       }
 
       $name->update([

@@ -187,11 +187,10 @@
     gap: 0.25rem;
   }
 
-  .table-order-container .find-container form input,
-  button {
+  .table-order-container .find-container form button {
     margin: 0;
     height: 100%;
-    padding: 0.5rem 0.5rem;
+    padding: 0.375rem 0.5rem;
   }
 
   .table-order-container {
@@ -337,12 +336,6 @@
 
         @if(session('LoggedUser'))
         <h5>{{$username}}</h5>
-        <button class="btn btn-outline-secondary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-          </svg>
-        </button>
 
         <a href="{{ route('logout.route') }}">
           <button class="btn btn-outline-danger" type="button">
@@ -377,8 +370,8 @@
 
       <div class="table-order-container">
         <div class="find-container">
-          <form action="" method="post">
-            <input class="form-control" type="text" value="{{ old('search') }}" placeholder="Buscar nome" name="search" />
+          <form action="{{ route('names.search') }}" method="get">
+            <input class="form-control" type="text" placeholder="Buscar nome" name="search" />
             <button type="submit" class="btn btn-primary">Procurar</button>
           </form>
         </div>
@@ -403,6 +396,7 @@
       </div>
 
       <table class="table table-striped">
+        @if($names->count() > 0)
         <thead>
           <tr>
             <th style="width: 50%;">Nome</td>
@@ -414,8 +408,10 @@
             <th>Usuário</td>
           </tr>
         </thead>
+        @endif
 
         <tbody>
+          @if($names->count() > 0)
           @foreach($names as $name)
 
           <tr>
@@ -457,6 +453,12 @@
           </tr>
 
           @endforeach
+
+          @else
+
+          <h4 style="margin-top: 1rem;">Nenhum nome encontrado.</h4>
+
+          @endif
         </tbody>
       </table>
 

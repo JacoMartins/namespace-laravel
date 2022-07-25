@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidateAccountCreation;
 use App\Http\Requests\ValidateData;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 

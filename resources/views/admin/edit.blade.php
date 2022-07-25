@@ -337,12 +337,6 @@
 
         @if(session('LoggedUser'))
         <h5>{{$username}}</h5>
-        <button class="btn btn-outline-secondary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-          </svg>
-        </button>
 
         <a href="{{ route('logout.route') }}">
           <button class="btn btn-outline-danger" type="button">
@@ -369,38 +363,9 @@
 
   <main>
     <div class="main-container">
-      @if (session('message'))
       <p style="color: darkgreen;">{{session('message')}}</p>
-      @endif
 
-      <h1>Nomes</h1>
-
-      <div class="table-order-container">
-        <div class="find-container">
-          <form action="" method="post">
-            <input class="form-control" type="text" value="{{ old('search') }}" placeholder="Buscar nome" name="search" />
-            <button type="submit" class="btn btn-primary">Procurar</button>
-          </form>
-        </div>
-
-        <div class="order-by-container">
-          <form action="{{ route('names.get', 'id') }}" method="get">
-            @csrf
-            <button type="submit" class="btn btn-secondary">Criação</button>
-          </form>
-
-          <form action="{{ route('names.get', 'name') }}" method="get">
-            @csrf
-            <button type="submit" class="btn btn-secondary">Alfabética</button>
-          </form>
-
-          <form action="{{ route('names.get', 'registers') }}" method="get">
-            @csrf
-            <input type="hidden" value="{{ csrf_token() }}" name="_token" />
-            <button type="submit" class="btn btn-secondary">Mais registros</button>
-          </form>
-        </div>
-      </div>
+      <h1>Editar nome</h1>
 
       <table class="table table-striped">
         <thead>
@@ -408,9 +373,7 @@
             <th style="width: 50%;">Nome</td>
             <th style="width: 15%;">Criação</td>
             <th style="width: 2%;">Reg</td>
-              @if(session('LoggedUser'))
             <th style=" width: 15%;">Ações</td>
-              @endif
             <th>Usuário</td>
           </tr>
         </thead>
@@ -426,27 +389,16 @@
             <td>
               <p class="tbl-a">{{ $name->registers }}</p>
             </td>
-            @if(session('LoggedUser'))
             <td>
-              @if($username === $name->who_posted)
               <div class="tbl-data-container">
-                <form action="{{ route('names.patch', $name->id) }}" method="post">
-                  <input type="hidden" value="{{ csrf_token() }}" name="_token" />
-                  <input type="hidden" value="PATCH" name="_method" />
-                  <button type="submit" class="btn btn-success btn-sm">Registrar</button>
-                </form>
-
-                <button type="submit" class="btn btn-primary btn-sm">Editar</button>
-
                 <form action="{{ route('names.delete', $name->id) }}" method="post">
                   <input type="hidden" value="{{ csrf_token() }}" name="_token" />
                   <input type="hidden" value="DELETE" name="_method" />
                   <button type="submit" class="btn btn-danger btn-sm">Apagar</button>
                 </form>
               </div>
-              @endif
             </td>
-            @endif
+
             <td>
               <p class="tbl-a">{{ $name->who_posted }}</p>
             </td>
@@ -455,19 +407,16 @@
         </tbody>
       </table>
 
-      <div class="paginator-container">{{$names->links()}}</div>
-
-      @if(session('LoggedUser'))
 
       <div class="post-name-container">
-        <form action="{{ route('names.post') }}" method="post">
+        <form action="{{ route('names.put', $name->id) }}" method="post">
           <input type="hidden" value="{{ csrf_token() }}" name="_token" />
-          <input class="form-control" type="text" value="{{ old('name') }}" placeholder="Postar um nome" name="name" />
-          <button type="submit" class="btn btn-primary">Enviar nome</button>
+          @method('PUT')
+          <input class="form-control" type="text" value="{{ old('name') }}" placeholder="Nome" name="name" />
+          <button type="submit" class="btn btn-primary">Editar nome</button>
         </form>
       </div>
 
-      @endif
     </div>
   </main>
 </body>
