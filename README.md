@@ -17,17 +17,16 @@
 
 - Primeiramente criei o projeto laravel usando o composer.
 
-```
+```console
 composer create-project laravel/laravel="8.*" projeto_semana02
-
 ```
 
 - Logo após configurei os containers no arquivo docker-compose.yml e utilizando o docker-compose, crei 2 containers: um para o app e um para o banco de dados.
 
 - Depois sincronizei com o app usando as a variáveis de ambiente, e iniciei a aplicação.
 
-```
-php artisan serve
+```console
+php artisan serve --host 0.0.0.0:8000
 ```
 
 ## Migrations
@@ -37,6 +36,8 @@ php artisan serve
 - Depois disso, iniciei o sistema de autenticação.
 
 ## Autenticação e Contas
+
+![Autenticação](https://i.imgur.com/AlWEC7k.png)
 
 - Para a autenticação, fiz um controller para os usuários, utilizando as funções create (para criar um novo usuário no banco) e where (para buscar um usuário já existente).
 
@@ -97,13 +98,15 @@ public function logout() {
 
 - Utilizei bootstrap e CSS puro para a estilização.
 
+![View de nomes](https://i.imgur.com/6ghHBiY.png)
+
 ## Nomes
 
 - Para os nomes, utilizei as funções get, paginate, orderBy e where.
 
 - Utilizei o paginate para separar em páginas de 10 nomes, orderBy para organizar os nomes de diferentes maneiras (Alfabética, Maior número de registros ou por ordem de criação).
 
-- Where para puxar os dados utilizando parâmetros específicos, com a ajuda dos operadores ('=', 'like', 'ilike' e etc). 
+- Where para puxar os dados utilizando parâmetros específicos, com a ajuda dos operadores ('=', 'like', 'ilike' e etc).
 
 ### Rotas
 
@@ -122,16 +125,19 @@ GET localhost:8000/names/{order} // -> Visualizar nomes com ordem modificada
 
 - Para renderizar os nomes usei o foreach do php em uma tabela e com o paginate, pude separar em páginas de 10 itens.
 
-```HTML
+```php
 @foreach($names as $name)
   <tr>
   </tr>...
 @endforeach
 ```
 
+Resultado:
+![Lista com Paginação](https://i.imgur.com/UD4lW04.png)
+
 - Também fiz os nomes da lista verificarem se há alguma sessão de usuário, caso haja, mostrar as ações que o usuário pode exercer sobre os nomes que ele postou.
 
-```HTML
+```php
 @if(session('LoggedUser'))
   @if($username === $name->who_posted)
   <button>ação1...
@@ -139,3 +145,14 @@ GET localhost:8000/names/{order} // -> Visualizar nomes com ordem modificada
 @endif
 ```
 
+![Ações do usuário](https://i.imgur.com/mhKjgZA.png)
+
+## Considerações finais
+
+- Foi um ótimo projeto para o meu aprendizado em php e laravel.
+
+- Sinto que estou começando a me habituar com a linguagem.
+
+- Aprendi a usar docker (especialmente docker-compose).
+
+- A todos que estão me acompanhando, agradeço!
