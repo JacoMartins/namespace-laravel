@@ -1,0 +1,30 @@
+version: "2"
+
+volumes:
+  postgres-data:
+    driver: local
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+  
+  app:
+    image: ambientum/php:8.1-nginx
+    container_name: app
+    volumes:
+      - .:/var/www/app
+    ports:
+      - '8000:8000'
+    environment:
+      XDEBUG_ENABLED: 'true'
+    links:
+      - postgres
