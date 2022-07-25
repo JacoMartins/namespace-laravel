@@ -23,10 +23,17 @@ composer create-project laravel/laravel="8.*" projeto_semana02
 
 - Logo após configurei os containers no arquivo docker-compose.yml e utilizando o docker-compose, crei 2 containers: um para o app e um para o banco de dados.
 
+Ligando os containers:
+```console
+sudo docker-compose up -d
+```
+
 - Depois sincronizei com o app usando as a variáveis de ambiente, e iniciei a aplicação.
 
 ```console
-php artisan serve --host 0.0.0.0:8000
+sudo docker exec -it app bash
+
+# php artisan serve --host 0.0.0.0:8000
 ```
 
 ## Migrations
@@ -108,6 +115,13 @@ public function logout() {
 
 - Where para puxar os dados utilizando parâmetros específicos, com a ajuda dos operadores ('=', 'like', 'ilike' e etc).
 
+Exemplos:
+
+```PHP
+Name::where('id', '=', $id)->first();
+Name::orderBy('coluna', 'ordem')->paginate(10);
+```
+
 ### Rotas
 
 - Fiz as rotas de criação, visualização, edição e exclusão de nomes, funcionando mais ou menos assim:
@@ -137,6 +151,8 @@ Resultado:
 
 - Também fiz os nomes da lista verificarem se há alguma sessão de usuário, caso haja, mostrar as ações que o usuário pode exercer sobre os nomes que ele postou.
 
+![Ações do usuário](https://i.imgur.com/mhKjgZA.png)
+
 ```php
 @if(session('LoggedUser'))
   @if($username === $name->who_posted)
@@ -144,8 +160,6 @@ Resultado:
   @endif
 @endif
 ```
-
-![Ações do usuário](https://i.imgur.com/mhKjgZA.png)
 
 ## Considerações finais
 
